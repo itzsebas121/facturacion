@@ -1,7 +1,8 @@
+import './SalesOrders.css';
 const SalesOrders = () => {
     return (
         <div>
-            <h1>Sales Orders</h1>
+            
         </div>
     );
 }

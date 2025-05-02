@@ -13,8 +13,9 @@ const config = {
   password: process.env.DB_PASSWORD,
   server: process.env.DB_SERVER,
   database: process.env.DB_DATABASE,
+  port: 10061,
   options: {
-    encrypt: false, 
+    encrypt: true, 
     trustServerCertificate: true,
   },
 };

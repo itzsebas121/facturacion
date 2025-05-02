@@ -2,16 +2,14 @@ import { NavLink } from 'react-router-dom';
 import { useAuth } from '../hooks/auth';
 import './NavBar.css';
 
-const NavBar = () => {
+const NavBar = (props) => {
     const { logout } = useAuth();
-    
+    const username = props.username;
     return (
         <nav className="navbar">
             <div className="navbar-container">
                 <div className="navbar-logo">
-                    <div className="logo-circle"></div>
-                    <img src="https://i.ibb.co/k9F32X1/logo.png" alt="Logo" />
-                    <span className="company-name">CompanyName</span>
+                    Bienvenido, {username}
                 </div>
                 
                 <ul className="navbar-links">

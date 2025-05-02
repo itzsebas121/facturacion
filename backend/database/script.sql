@@ -55,9 +55,7 @@ CREATE PROCEDURE ValidateUser @Username VARCHAR(50),
 @Password VARCHAR(100) AS BEGIN
 SET
     NOCOUNT ON;
-
 DECLARE @PasswordHash VARBINARY(64);
-
 SET
     @PasswordHash = HASHBYTES('SHA2_256', CONVERT(VARBINARY, @Password));
 
@@ -72,21 +70,17 @@ WHERE
 
 END;
 
-GO
-    EXEC CreateSalesOrder @CustomerID = '1017702564';
+GO;
+EXEC CreateSalesOrder @CustomerID = '1017702564';
 
 -- Procedimiento para crear una nueva orden de venta
 CREATE PROCEDURE CreateSalesOrder @CustomerID VARCHAR(10) AS BEGIN
 SET
     NOCOUNT ON;
-
--- Insert a new SalesOrder with default financial values
 INSERT INTO
     SalesOrders (CustomerID, Date, IVA, Subtotal, Total)
 VALUES
     (@CustomerID, GETDATE(), 0.00, 0.00, 0.00);
-
--- Return the newly created OrderID
 SELECT
     SCOPE_IDENTITY() AS NewOrderID;
 
@@ -187,7 +181,54 @@ END;
 
 EXEC CreateSalesOrder @CustomerID = '1017702564';
 
--------
+GO
+;
+
+--
+CREATE OR ALTER PROCEDURE GetProducts
+    @Filtro VARCHAR(100) = NULL,
+    @ExcludedIDs VARCHAR(MAX) = NULL  -- lista CSV: 'P001,P002,P005'
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    -- Parse CSV into table
+    DECLARE @ExcludedTable TABLE (ProductID VARCHAR(10));
+
+    IF @ExcludedIDs IS NOT NULL
+    BEGIN
+        INSERT INTO @ExcludedTable (ProductID)
+        SELECT TRIM(value)
+        FROM STRING_SPLIT(@ExcludedIDs, ',');
+    END
+
+    SELECT *
+    FROM Products
+    WHERE
+        (
+            @Filtro IS NULL
+            OR LOWER(ProductID) LIKE LOWER('%' + @Filtro + '%')
+            OR LOWER(Name) IS NULL
+            OR LOWER(Name) LIKE LOWER('%' + @Filtro + '%')
+        )
+        AND (
+            @ExcludedIDs IS NULL
+            OR ProductID NOT IN (SELECT ProductID FROM @ExcludedTable)
+        );
+END;
+
+
+CREATE
+OR ALTER PROCEDURE GetCustomers @Filtro VARCHAR(100) = NULL AS BEGIN
+SELECT
+    *
+FROM
+    Customers
+WHERE
+    @Filtro IS NULL
+    OR LOWER(CustomerID) LIKE LOWER('%' + @Filtro + '%')
+    OR LOWER(FirstName + ' ' + LastName) LIKE LOWER('%' + @Filtro + '%')
+END -------
 INSERT INTO
     Customers (
         CustomerID,
