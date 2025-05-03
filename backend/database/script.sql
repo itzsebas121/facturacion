@@ -214,7 +214,8 @@ BEGIN
         AND (
             @ExcludedIDs IS NULL
             OR ProductID NOT IN (SELECT ProductID FROM @ExcludedTable)
-        );
+        )
+        AND(Stock > 0)
 END;
 
 
