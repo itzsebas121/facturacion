@@ -42,7 +42,7 @@ export default function InvoiceDetailModal({ orderId, onClose }) {
           <!DOCTYPE html>
           <html>
           <head>
-            <title>Factura ${invoice.id}</title>
+            <title>Factura ${invoice.invoice_id}</title>
             <style>
               body { font-family: Arial, sans-serif; margin: 20px; }
               .header { display: flex; justify-content: space-between; margin-bottom: 20px; }

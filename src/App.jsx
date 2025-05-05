@@ -6,6 +6,7 @@ import SalesOrders from './pages/SalesOrders/SalesOrders';
 import History from './pages/HistoryPage/History';
 import useAuth from './hooks/useAuth';
 import Loading from './components/Loading';
+import Dashboard from './pages/Dashboard/Dashboard';
 
 function App() {
   const { isAuthenticated } = useAuth();
@@ -25,7 +26,7 @@ function App() {
               <Home />
             }
           >
-            <Route index element={<div>Dashboard o pantalla inicial</div>} />
+            <Route index element={<Dashboard></Dashboard>} />
             <Route path="sales" element={<SalesOrders />} />
             <Route path="history" element={<History />} />
           </Route>

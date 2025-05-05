@@ -1,4 +1,5 @@
 import { NavLink, useNavigate } from 'react-router-dom';
+import { LogOut } from 'lucide-react';
 import './NavBar.css';
 import useAuth from '../hooks/useAuth';
 import { useEffect } from 'react';
@@ -39,7 +40,7 @@ const NavBar = () => {
 
                 <div className="navbar-logout">
                     <button className="logout-button" onClick={logout}>
-                        <span>Logout</span>
+                      <LogOut style={{width:20}}></LogOut> <span>Logout</span>
                     </button>
                 </div>
             </div>
