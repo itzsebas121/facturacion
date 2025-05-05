@@ -1,6 +1,35 @@
-import { FileText, User, UserPlus, MapPin, Phone, Mail, Building2 } from "lucide-react"
+import { FileText, User, UserPlus, MapPin, Phone, Mail, Building2 } from "lucide-react";
+import { useEffect, useState } from "react";
+import { config } from "../../../hooks/config";
 
-export default function InvoiceHeader({ invoiceNumber, customer, onSelectCustomer }) {
+export default function InvoiceHeader({ customer, onSelectCustomer, newOrderID, onSaveInvoice }) {
+  const [loading, setLoading] = useState(true);
+  const [orderID, setOrderID] = useState(null);
+
+  useEffect(() => {
+    if (newOrderID) {
+      setOrderID(newOrderID); 
+    }
+  }, [newOrderID]); // Dependencia de newOrderID
+
+  useEffect(() => {
+    const fetchNextOrderID = async () => {
+      try {
+        const response = await fetch(`${config.apiRest}/next-sale-order`);
+        const data = await response.json();
+        setOrderID(data.nextOrderID); // Actualizamos el orderID con el nuevo ID
+      } catch (error) {
+        console.error("Error al obtener el siguiente OrderID:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    if (!newOrderID) { // Si no hay un ID, se obtiene uno por defecto.
+      fetchNextOrderID();
+    }
+  }, [newOrderID]);
+
   return (
     <div className="invoice-header">
       <div className="header-top">
@@ -11,7 +40,7 @@ export default function InvoiceHeader({ invoiceNumber, customer, onSelectCustome
           <div className="invoice-number">
             <FileText size={16} />
             <span>Factura: </span>
-            <strong>{invoiceNumber}</strong>
+            <strong>{loading ? "Cargando..." : orderID}</strong>
           </div>
           <div className="invoice-date">
             <span>Fecha: </span>
@@ -43,7 +72,7 @@ export default function InvoiceHeader({ invoiceNumber, customer, onSelectCustome
               <div className="customer-name"> {customer.FirstName} {customer.LastName}</div>
               <div className="customer-rfc">
                 <Building2 size={14} />
-                <span>Cedula: {customer.CustomerID}</span>
+                <span>Cédula: {customer.CustomerID}</span>
               </div>
             </div>
             <div className="customer-card-details">
@@ -68,5 +97,5 @@ export default function InvoiceHeader({ invoiceNumber, customer, onSelectCustome
         )}
       </div>
     </div>
-  )
+  );
 }

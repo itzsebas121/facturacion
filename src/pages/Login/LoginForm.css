@@ -1,3 +1,4 @@
+
 * {
   box-sizing: border-box;
   margin: 0;
@@ -6,7 +7,8 @@
 
 body {
   font-family: "Poppins", "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-  color: #333;
+  background-color: var(--color-bg);
+  color: var(--color-text-primary);
   min-height: 100vh;
 }
 
@@ -20,15 +22,15 @@ body {
 }
 
 .login-card {
-  background-color: white;
-  border-radius: 20px;
-  box-shadow: 0 15px 50px rgba(0, 0, 0, 0.2);
+  background-color: var(--color-white);
+  border-radius: var(--border-radius-lg);
+  box-shadow: var(--shadow-lg);
   width: 100%;
   max-width: 1000px;
   overflow: hidden;
   display: flex;
   transform-style: preserve-3d;
-  transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+  transition: var(--transition);
 }
 
 .login-card:hover {
@@ -45,13 +47,13 @@ body {
 
 .card-right {
   flex: 1;
-  background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark) 100%);
   position: relative;
   overflow: hidden;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: white;
+  color: var(--color-white);
   text-align: center;
   padding: 40px;
 }
@@ -62,14 +64,14 @@ body {
   margin-bottom: 30px;
   font-weight: 700;
   font-size: 18px;
-  color: #6a11cb;
+  color: var(--color-primary);
 }
 
 .logo-circle {
   width: 30px;
   height: 30px;
   border-radius: 50%;
-  background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+  background: var(--color-primary);
   margin-right: 10px;
   position: relative;
 }
@@ -82,7 +84,7 @@ body {
   transform: translate(-50%, -50%);
   width: 15px;
   height: 15px;
-  background: white;
+  background: var(--color-white);
   border-radius: 50%;
 }
 
@@ -92,18 +94,18 @@ body {
 }
 
 .login-header h1 {
-  color: #2d3748;
+  color: var(--color-text-primary);
   font-size: 32px;
   margin-bottom: 10px;
   font-weight: 700;
-  background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark) 100%);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
 .login-header p {
-  color: #718096;
+  color: var(--color-text-secondary);
   font-size: 16px;
 }
 
@@ -122,7 +124,7 @@ body {
 label {
   font-size: 14px;
   font-weight: 600;
-  color: #4a5568;
+  color: var(--color-text-secondary);
 }
 
 .input-container {
@@ -136,30 +138,30 @@ label {
   transform: translateY(-50%);
   width: 20px;
   height: 20px;
-  color: #a0aec0;
+  color: var(--color-text-muted);
 }
 
 input[type="text"],
 input[type="password"] {
   padding: 16px 16px 16px 48px;
-  border: 2px solid #e2e8f0;
-  border-radius: 12px;
+  border: 2px solid var(--color-border);
+  border-radius: var(--border-radius);
   font-size: 16px;
-  transition: all 0.3s ease;
+  transition: var(--transition);
   width: 100%;
-  background-color: #f8fafc;
+  background-color: var(--color-secondary-light);
 }
 
 input[type="text"]:focus,
 input[type="password"]:focus {
   outline: none;
-  border-color: #6a11cb;
+  border-color: var(--color-primary);
   box-shadow: 0 0 0 4px rgba(106, 17, 203, 0.15);
-  background-color: white;
+  background-color: var(--color-white);
 }
 
 input::placeholder {
-  color: #a0aec0;
+  color: var(--color-text-muted);
 }
 
 .form-options {
@@ -179,16 +181,16 @@ input::placeholder {
   appearance: none;
   width: 18px;
   height: 18px;
-  border: 2px solid #e2e8f0;
+  border: 2px solid var(--color-border);
   border-radius: 4px;
   position: relative;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: var(--transition);
 }
 
 .remember-me input[type="checkbox"]:checked {
-  background-color: #6a11cb;
-  border-color: #6a11cb;
+  background-color: var(--color-primary);
+  border-color: var(--color-primary);
 }
 
 .remember-me input[type="checkbox"]:checked:after {
@@ -198,39 +200,39 @@ input::placeholder {
   left: 6px;
   width: 4px;
   height: 8px;
-  border: solid white;
+  border: solid var(--color-white);
   border-width: 0 2px 2px 0;
   transform: rotate(45deg);
 }
 
 .remember-me label {
   font-size: 14px;
-  color: #718096;
+  color: var(--color-text-secondary);
   cursor: pointer;
 }
 
 .forgot-password {
   font-size: 14px;
-  color: #6a11cb;
+  color: var(--color-primary);
   text-decoration: none;
   transition: color 0.2s ease;
 }
 
 .forgot-password:hover {
-  color: #4c0d96;
+  color: var(--color-primary-dark);
   text-decoration: underline;
 }
 
 .login-button {
-  background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
-  color: white;
+  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark) 100%);
+  color: var(--color-white);
   border: none;
-  border-radius: 12px;
+  border-radius: var(--border-radius);
   padding: 16px;
   font-size: 16px;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: var(--transition);
   margin-top: 10px;
   display: flex;
   justify-content: center;
@@ -248,10 +250,10 @@ input::placeholder {
   width: 100%;
   height: 100%;
   background: linear-gradient(
-    90deg,
-    rgba(255, 255, 255, 0) 0%,
-    rgba(255, 255, 255, 0.2) 50%,
-    rgba(255, 255, 255, 0) 100%
+      90deg,
+      rgba(255, 255, 255, 0) 0%,
+      rgba(255, 255, 255, 0.2) 50%,
+      rgba(255, 255, 255, 0) 100%
   );
   transition: all 0.6s ease;
 }
@@ -262,7 +264,7 @@ input::placeholder {
 
 .login-button:hover {
   transform: translateY(-3px);
-  box-shadow: 0 10px 20px rgba(106, 17, 203, 0.3);
+  box-shadow: var(--shadow-md);
 }
 
 .login-button:active {
@@ -270,7 +272,7 @@ input::placeholder {
 }
 
 .login-button:disabled {
-  background: linear-gradient(135deg, #a0aec0 0%, #cbd5e0 100%);
+  background: linear-gradient(135deg, var(--color-border-light) 0%, var(--color-border) 100%);
   cursor: not-allowed;
   transform: none;
   box-shadow: none;
@@ -286,27 +288,27 @@ input::placeholder {
   height: 20px;
   border: 3px solid rgba(255, 255, 255, 0.3);
   border-radius: 50%;
-  border-top-color: white;
+  border-top-color: var(--color-white);
   animation: spin 1s ease-in-out infinite;
 }
 
 @keyframes spin {
   to {
-    transform: rotate(360deg);
+      transform: rotate(360deg);
   }
 }
 
 .error-message {
-  background-color: #fff5f5;
-  color: #e53e3e;
+  background-color: var(--color-white);
+  color: var(--color-error);
   padding: 16px;
-  border-radius: 12px;
+  border-radius: var(--border-radius);
   margin-bottom: 20px;
   font-size: 14px;
   display: flex;
   align-items: center;
   gap: 10px;
-  border-left: 4px solid #e53e3e;
+  border-left: 4px solid var(--color-error);
 }
 
 .error-message svg {
@@ -319,11 +321,11 @@ input::placeholder {
   text-align: center;
   margin-top: 30px;
   font-size: 14px;
-  color: #718096;
+  color: var(--color-text-secondary);
 }
 
 .signup-link a {
-  color: #6a11cb;
+  color: var(--color-primary);
   text-decoration: none;
   font-weight: 600;
   transition: color 0.2s ease;
@@ -331,7 +333,7 @@ input::placeholder {
 
 .signup-link a:hover {
   text-decoration: underline;
-  color: #4c0d96;
+  color: var(--color-primary-dark);
 }
 
 .decoration {
@@ -404,43 +406,43 @@ input::placeholder {
 
 @media (max-width: 900px) {
   .card-right {
-    display: none;
+      display: none;
   }
 
   .login-card {
-    max-width: 500px;
+      max-width: 500px;
   }
 
   .card-left {
-    padding: 40px 30px;
+      padding: 40px 30px;
   }
 }
 
 @media (max-width: 480px) {
   .login-card {
-    border-radius: 15px;
+      border-radius: var(--border-radius);
   }
 
   .card-left {
-    padding: 30px 20px;
+      padding: 30px 20px;
   }
 
   .login-header h1 {
-    font-size: 24px;
+      font-size: 24px;
   }
 
   input[type="text"],
   input[type="password"] {
-    padding: 14px 14px 14px 44px;
+      padding: 14px 14px 14px 44px;
   }
 
   .login-button {
-    padding: 14px;
+      padding: 14px;
   }
 
   .form-options {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 10px;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 10px;
   }
 }

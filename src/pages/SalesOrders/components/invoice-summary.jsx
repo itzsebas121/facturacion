@@ -1,53 +1,79 @@
 import { Save, Printer } from "lucide-react"
+import { config } from "../../../hooks/config";
 
-export default function InvoiceSummary({ subtotal, iva, total, selectedProducts, customer }) {
-  const handlePrint = () => {
-    window.print()
-  }
-  const CreateNewOrder = (customerId, selectedProducts) => {
+export default function InvoiceSummary({ subtotal, iva, total, selectedProducts, customer, onSaveSuccess }) {
+
+  const CreateNewOrder = async (customerId, selectedProducts) => {
     const data = {
       customerId: customerId
-    }
-    fetch("http://localhost:3001/sales-order", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(data)
-    })
-      .then(response => response.json())
-      .then(data => {
-        const newOrderID = data.newOrderID;
-        if( InsertDetailOrder(newOrderID, selectedProducts)) alert("Orden creada");
-      })
-      .catch(error => {
-        console.error("Error al crear la orden:", error)
-      })
-  }
-  const InsertDetailOrder = (newOrderID, selectedProducts) => {
-    selectedProducts.forEach(product => {
-      const data = {
-        orderId: newOrderID,
-        productID: product.ProductID,
-        quantity: product.quantity
-      }
-      fetch("http://localhost:3001/sales-order-detail", {
+    };
+    try {
+      const response = await fetch(`${config.apiRest}/sales-order`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
         },
         body: JSON.stringify(data)
-      })
-        .then(response => response.json())
-        .then(data => {
+      });
+      const result = await response.json();
+      const newOrderID = result.newOrderID;
+  
+      const detallesOK = await InsertDetailOrder(newOrderID, selectedProducts);
+      if (detallesOK) {
+        onSaveSuccess()
+        alert("Factura guardada exitosamente");
+      } else {
+
+        alert("Error al agregar productos a la orden, revise el stock de productos");
+        DeleteOrder(newOrderID);
+      }
+  
+    } catch (error) {
+      console.error("Error al crear la orden:", error);
+    }
+  };
+  const DeleteOrder = async (newOrderID) => {
+    try {
+      const response = await fetch(`${config.apiRest}/sales-order/${newOrderID}`, {
+        method: "DELETE"
+      });
+      if (response.ok) {
+        console.log("Orden eliminada correctamente");
+      } else {
+        console.error("Error al eliminar la orden");
+      }
+    } catch (error) {
+      console.error("Error al eliminar la orden:", error);
+    }
+  };
+  const InsertDetailOrder = async (newOrderID, selectedProducts) => {
+    try {
+      const results = await Promise.all(
+        selectedProducts.map(product => {
+          const data = {
+            orderId: newOrderID,
+            productID: product.ProductID,
+            quantity: product.quantity
+          };
+          return fetch(`${config.apiRest}/sales-order-detail`, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify(data)
+          }).then(response => response.json());
         })
-        .catch(error => {
-          console.error("Error al crear el detalle de la orden:", error)
-          return false;
-        })
-    })
-    return true;
-  }
+      );
+  
+      const hasError = results.some(res => res.message === "Error al agregar detalle de orden.");
+      return !hasError;
+  
+    } catch (error) {
+      console.error("Error al crear el detalle de la orden:", error);
+      return false;
+    }
+  };
+  
   const handleShowProducts = () => {
     if (!customer) {
       alert("Debe seleccionar un cliente")
@@ -86,10 +112,7 @@ export default function InvoiceSummary({ subtotal, iva, total, selectedProducts,
             <Save size={16} />
             <span>Guardar</span>
           </button>
-          <button className="btn btn-secondary" onClick={handlePrint}>
-            <Printer size={16} />
-            <span>Imprimir</span>
-          </button>
+
         </div>
       </div>
     </div>

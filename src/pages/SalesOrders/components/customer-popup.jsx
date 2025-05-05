@@ -1,22 +1,28 @@
 import { useState, useEffect } from "react"
 import { Search, X, Check } from "lucide-react"
+import { config } from "../../../hooks/config"
 
 export default function CustomerPopup({ onSelectCustomer, onClose }) {
   const [searchTerm, setSearchTerm] = useState("")
+  const [debouncedTerm, setDebouncedTerm] = useState("")
   const [customers, setCustomers] = useState([])
   const [loading, setLoading] = useState(false)
 
-  const filteredCustomers = customers.filter((customer) =>
-    (`${customer.FirstName} ${customer.LastName}`.toLowerCase().includes(searchTerm.toLowerCase()) ||
-     customer.CustomerID.toLowerCase().includes(searchTerm.toLowerCase()))
-  )
+  // Debounce del término de búsqueda
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedTerm(searchTerm)
+    }, 500)
+
+    return () => clearTimeout(timer)
+  }, [searchTerm])
 
   useEffect(() => {
     const fetchCustomers = async () => {
       setLoading(true)
       try {
-        const url = `http://localhost:3001/customers?filtro=${searchTerm}`
-
+        const queryParam = debouncedTerm.trim() ? `?filtro=${debouncedTerm}` : ""
+        const url = `${config.apiRest}/customers${queryParam}`
         const response = await fetch(url)
         const data = await response.json()
         setCustomers(data)
@@ -28,8 +34,7 @@ export default function CustomerPopup({ onSelectCustomer, onClose }) {
     }
 
     fetchCustomers()
-  }, [searchTerm])
-
+  }, [debouncedTerm])
 
   return (
     <div className="modal-overlay" onClick={(e) => e.target.className === "modal-overlay" && onClose()}>
@@ -57,9 +62,11 @@ export default function CustomerPopup({ onSelectCustomer, onClose }) {
         </div>
 
         <div className="modal-content">
-          {filteredCustomers.length > 0 ? (
+          {loading ? (
+            <p>Cargando...</p>
+          ) : customers.length > 0 ? (
             <div className="customer-list">
-              {filteredCustomers.map((customer) => (
+              {customers.map((customer) => (
                 <div key={customer.CustomerID} className="customer-list-item" onClick={() => onSelectCustomer(customer)}>
                   <div>
                     <div className="customer-list-name">{customer.FirstName} {customer.LastName}</div>

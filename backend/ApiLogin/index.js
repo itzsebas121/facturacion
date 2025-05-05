@@ -13,11 +13,12 @@ const config = {
   password: process.env.DB_PASSWORD,
   server: process.env.DB_SERVER,
   database: process.env.DB_DATABASE,
-  port: 10061,
   options: {
     encrypt: true, 
     trustServerCertificate: true,
   },
+  connectionTimeout: 30000, 
+  requestTimeout: 60000 
 };
 
 app.post('/login', async (req, res) => {
@@ -35,14 +36,14 @@ app.post('/login', async (req, res) => {
     const user = result.recordset[0];
 
     if (!user) {
-      return res.status(401).json({ message: 'Invalid credentials' });
+      return res.status(401).json({ message: 'Credenciales inválidas' });
     }
 
     // Create JWT token
     const token = jwt.sign(
       { userId: user.UserID, username: user.Username },
       process.env.JWT_SECRET,
-      { expiresIn: '3m' }
+      { expiresIn: '1m' }
     );
 
     res.json({ token });

@@ -218,6 +218,17 @@ BEGIN
         AND(Stock > 0)
 END;
 
+CREATE OR ALTER PROCEDURE GetSalesOrders
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    SELECT so.OrderID, so.Date, (c.FirstName+' '+ c.LastName) as NameClient, so.Total
+    FROM SalesOrders so
+    INNER JOIN Customers c ON so.CustomerID = c.CustomerID
+   
+END;
+
 
 CREATE
 OR ALTER PROCEDURE GetCustomers @Filtro VARCHAR(100) = NULL AS BEGIN

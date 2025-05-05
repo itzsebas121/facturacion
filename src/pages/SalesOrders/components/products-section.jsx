@@ -1,6 +1,8 @@
 import { ShoppingBag, Plus, Minus, Trash2 } from "lucide-react"
+import { config } from "../../../hooks/config"
 
 export default function ProductsSection({ products, onAddProduct, onRemoveProduct, onUpdateQuantity }) {
+ 
   return (
     <div className="section">
       <div className="section-header">
