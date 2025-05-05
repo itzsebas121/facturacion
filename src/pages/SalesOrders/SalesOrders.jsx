@@ -12,13 +12,13 @@ export default function Home() {
   const [selectedProducts, setSelectedProducts] = useState([]);
   const [showCustomerPopup, setShowCustomerPopup] = useState(false);
   const [showProductPopup, setShowProductPopup] = useState(false);
-  const [newOrderID, setNewOrderID] = useState(null); 
+  const [newOrderID, setNewOrderID] = useState(null);
 
   const fetchNextOrderID = async () => {
     try {
       const response = await fetch(`${config.apiRest}/next-sale-order`);
       const data = await response.json();
-      setNewOrderID(data.nextOrderID); 
+      setNewOrderID(data.nextOrderID);
     } catch (error) {
       console.error("Error al obtener el siguiente OrderID:", error);
     }
@@ -36,7 +36,7 @@ export default function Home() {
   const handleClearInvoice = () => {
     setSelectedCustomer(null);
     setSelectedProducts([]);
-    fetchNextOrderID(); // Actualizar el OrderID cuando se guarda la factura
+    fetchNextOrderID();
   };
 
   const handleSelectProduct = (product) => {
@@ -59,7 +59,10 @@ export default function Home() {
 
   const handleUpdateQuantity = (productId, newQuantity) => {
     if (newQuantity <= 0) {
-      handleRemoveProduct(productId);
+      if (confirm("¿Estás seguro de que deseas eliminar este producto?")) {
+
+        handleRemoveProduct(productId);
+      }
       return;
     }
 
@@ -85,7 +88,7 @@ export default function Home() {
           newOrderID={newOrderID} // Pasar el nuevo ID al encabezado
           onSaveInvoice={handleClearInvoice} // Pasar la función para guardar y actualizar el ID
         />
-        
+
         <div className="invoice-body">
           <div className="invoice-columns">
             <div className="invoice-left-column">

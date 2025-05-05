@@ -2,7 +2,7 @@ import { ShoppingBag, Plus, Minus, Trash2 } from "lucide-react"
 import { config } from "../../../hooks/config"
 
 export default function ProductsSection({ products, onAddProduct, onRemoveProduct, onUpdateQuantity }) {
- 
+
   return (
     <div className="section">
       <div className="section-header">
@@ -36,7 +36,12 @@ export default function ProductsSection({ products, onAddProduct, onRemoveProduc
                 </div>
                 <div className="product-total">${(product.Price * product.quantity).toFixed(2)}</div>
                 <button
-                  onClick={() => onRemoveProduct(product.ProductID)}
+                  onClick={() => {
+                    if (confirm("¿Estás seguro de que deseas eliminar este producto?")) {
+                      onRemoveProduct(product.ProductID)
+                    }
+                  }
+                  }
                   className="remove-btn"
                   aria-label="Eliminar producto"
                 >
